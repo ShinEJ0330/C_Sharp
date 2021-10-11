@@ -142,3 +142,5 @@
 >![재고관리6](https://user-images.githubusercontent.com/90272655/136763039-c0f1b0b3-8c56-482f-9b3b-3ecf5ee0dda6.gif)
 >
 >7. 사용된 DB (mysql)
+>
+>![재고관리7](https://user-images.githubusercontent.com/90272655/136763917-b7befbf0-b460-431a-9b1d-79e1da60a7e7.GIF)
