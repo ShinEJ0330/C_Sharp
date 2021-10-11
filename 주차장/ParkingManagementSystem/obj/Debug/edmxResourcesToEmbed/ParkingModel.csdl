@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ParkingDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Admin">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LoginId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PhoneNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CheckOut">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CarNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CarType" Type="String" MaxLength="5" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="EnterTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ExitTime" Type="DateTime" Precision="3" />
+    <Property Name="ParkingCharge" Type="Int32" />
+    <Property Name="ParkingLotNum" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="ParkInfo" Relationship="ParkingDBModel.FK_CheckOut_ParkInfo" FromRole="CheckOut" ToRole="ParkInfo" />
+  </EntityType>
+  <EntityType Name="ParkInfo">
+    <Key>
+      <PropertyRef Name="ParkingLotNum" />
+    </Key>
+    <Property Name="ParkingLotNum" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Status" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="CheckOuts" Relationship="ParkingDBModel.FK_CheckOut_ParkInfo" FromRole="ParkInfo" ToRole="CheckOut" />
+  </EntityType>
+  <EntityType Name="Rule">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CarType" Type="String" MaxLength="5" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ChargeOfHour" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="ParkingDB" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Admins" EntityType="Self.Admin" />
+    <EntitySet Name="CheckOuts" EntityType="Self.CheckOut" />
+    <EntitySet Name="ParkInfoes" EntityType="Self.ParkInfo" />
+    <EntitySet Name="Rules" EntityType="Self.Rule" />
+    <AssociationSet Name="FK_CheckOut_ParkInfo" Association="ParkingDBModel.FK_CheckOut_ParkInfo">
+      <End Role="ParkInfo" EntitySet="ParkInfoes" />
+      <End Role="CheckOut" EntitySet="CheckOuts" />
+    </AssociationSet>
+  </EntityContainer>
+  <Association Name="FK_CheckOut_ParkInfo">
+    <End Type="ParkingDBModel.ParkInfo" Role="ParkInfo" Multiplicity="1" />
+    <End Type="ParkingDBModel.CheckOut" Role="CheckOut" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ParkInfo">
+        <PropertyRef Name="ParkingLotNum" />
+      </Principal>
+      <Dependent Role="CheckOut">
+        <PropertyRef Name="ParkingLotNum" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
